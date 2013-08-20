@@ -1,42 +1,88 @@
 require 'ttt'
 
 describe TTT do
+  let(:game) { described_class.new }
   context 'making a move' do
     it 'stores spaces with a piece' do
       piece  = "X"
       square = "1"
-      game = described_class.new
 
       game.store_move(square, piece)
 
       game.available?(square).should be_false
     end
 
-    it 'raises error if space is taken' do
-      piece  = "X"
-      square = "1"
-      game = described_class.new
 
-      game.store_move(square, piece)
-      game.store_move(square, piece)
-      game.error.should be_true
+    it 'knows the piece to play' do
+      game.piece.should == 'X'
+      game.store_move('1', game.piece)
+      
+      game.available?('1').should be_false
+
+      game.piece.should == 'O'
+    end
+      
+    context 'raising errors' do
+      it 'raises error if space is taken' do
+        piece  = "X"
+        square = "1"
+
+        game.store_move(square, piece)
+        game.store_move(square, piece)
+
+        game.error.should be_true
+      end
+
+      it 'raises error if input is not 1-9' do
+        game.valid?('54').should == false
+        game.valid?('a').should == false
+        game.valid?('3').should == true
+      end
     end
   end
 
   context 'board state' do
     it 'knows the squares on the board' do
-      game = described_class.new
-
       game.squares.all? {|square| square.available?}.should be_true
     end
 
     it 'keeps state of the squares' do
-      game = described_class.new
       game.store_move('1', 'X')
 
       game.squares.all? {|square| square.available?}.should be_false
+
       game.available?('1').should be_false
       game.available?('0').should be_true
+    end
+  end
+
+  context 'game over' do
+    it 'finds winner' do
+      game.store_move('0', 'X')
+      game.store_move('1', 'X')
+      game.store_move('2', 'X')
+
+      game.available?('0').should be_false
+      game.find_winner.should == 'X'
+      game.over?.should be_true
+    end
+
+    it 'knows game is over when there is a tie' do
+      game.find_winner.should == nil
+      
+      game.store_move('0', 'O')
+      game.store_move('1', 'X')
+      game.store_move('2', 'O')
+      game.store_move('3', 'X')
+      game.store_move('4', 'O')
+      game.store_move('5', 'X')
+      game.store_move('6', 'X')
+      game.store_move('7', 'O')
+      game.store_move('8', 'X')
+
+      game.find_winner.should == nil
+
+      game.over?.should == true
     end
   end
 end
