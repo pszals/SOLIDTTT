@@ -44,4 +44,82 @@ describe GameRules do
       rules.find_winner.should == nil
     end
   end
+
+  context 'making a move' do
+    it 'stores spaces with a piece' do
+      piece  = "X"
+      square =  1 
+      rules.store_move(square, piece)
+
+      rules.piece.should == 'O'
+      rules.available?(square).should be_false
+    end
+
+
+    it 'knows the piece to play' do
+      rules.piece.should == 'X'
+      rules.store_move(1, rules.piece)
+      rules.available?('1').should be_false
+
+      rules.piece.should == 'O'
+    end
+  end
+
+  context 'checking for move validity' do
+    it 'raises error if input is not 1-9' do
+      rules.valid?('54').should == false
+      rules.valid?('a').should == false
+      rules.valid?('3').should == true
+    end
+
+    it 'is invalid if 1-9 and space is not open' do
+      set_contents(3, 'X')
+      rules.valid?('3').should be_false
+    end
+  end
+
+  context 'board state' do
+    it 'knows the squares on the board' do
+      rules.squares.all? {|square| square.available?}.should be_true
+    end
+
+    it 'keeps state of the squares' do
+      set_contents(1, 'X')
+
+      rules.squares.all? {|square| square.available?}.should be_false
+
+      rules.available?('1').should be_false
+      rules.available?('0').should be_true
+    end
+  end
+
+  context 'game over' do
+    it 'finds winner' do
+      set_contents(0, 'X')
+      set_contents(1, 'X')
+      set_contents(2, 'X')
+
+      rules.available?('0').should be_false
+      rules.find_winner.should == 'X'
+      rules.over?.should be_true
+    end
+
+    it 'knows game is over when there is a tie' do
+      rules.find_winner.should == nil
+
+      set_contents(0, 'O')
+      set_contents(1, 'X')
+      set_contents(2, 'O')
+      set_contents(3, 'X')
+      set_contents(4, 'O')
+      set_contents(5, 'X')
+      set_contents(6, 'X')
+      set_contents(7, 'O')
+      set_contents(8, 'X')
+
+      rules.find_winner.should == nil
+
+      rules.over?.should == true
+    end
+  end
 end

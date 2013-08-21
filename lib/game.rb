@@ -2,13 +2,17 @@ require_relative 'board'
 require_relative 'game_rules'
 
 class Game
+  FIRST_PLAYER_PIECE  = "X"
+  SECOND_PLAYER_PIECE = "O"
+  GAME_PEICES = [FIRST_PLAYER_PIECE, "O"]
+
   attr_reader :squares
   attr_accessor :error, :piece
 
   def initialize(board)
     @board   = board
     @squares = board.squares
-    @piece   = 'X'
+    @piece   = FIRST_PLAYER_PIECE
   end
 
   def valid?(input)
@@ -18,7 +22,7 @@ class Game
   def store_move(location, piece=@piece)
     if available?(location)
       square_at(location).set_contents(piece)
-      @piece == 'X' ? @piece = 'O' : @piece = 'X'
+#     switch_piece
       @error = false
     else
       raise_error
@@ -35,6 +39,10 @@ class Game
 
   def over?
     squares.all? {|square| !square.available?} || find_winner
+  end
+
+  def switch_piece
+    @piece == FIRST_PLAYER_PIECE ? @piece = SECOND_PLAYER_PIECE : @piece = FIRST_PLAYER_PIECE
   end
 
   private

@@ -1,16 +1,19 @@
 class GameRules
-  FIRST_PLAYER_PIECE = "X"
-  GAME_PEICES = [FIRST_PLAYER_PIECE, "O"]
+  FIRST_PLAYER_PIECE  = "X"
+  SECOND_PLAYER_PIECE = "O"
+  GAME_PIECES = [FIRST_PLAYER_PIECE, "O"]
 
-  attr_accessor :board
+  attr_accessor :board, :piece, :squares
 
   def initialize(board)
-    @board = board
+    @board   = board
+    @squares = board.squares
+    @piece   = FIRST_PLAYER_PIECE
   end
 
   def find_winner
     combinations.each do |combination|
-      GAME_PEICES.each do |piece|
+      GAME_PIECES.each do |piece|
         return piece if winner?(piece, combination)
       end
     end
@@ -22,7 +25,28 @@ class GameRules
     squares.all? {|square| !square.available?} || find_winner
   end
 
+  def store_move(location, piece=@piece)
+    square_at(location).set_contents(piece)
+    switch_piece
+  end
+
+  def valid?(input)
+    !(input =~ /\A[0-8]\Z/) ? false : true && available?(input)
+  end
+
+  def available?(location)
+    square_at(location).available?
+  end
+
+  def switch_piece
+    @piece == FIRST_PLAYER_PIECE ? @piece = SECOND_PLAYER_PIECE : @piece = FIRST_PLAYER_PIECE
+  end
+
   private
+
+  def square_at(location)
+    @board.square_at(location)
+  end
 
   def winner?(piece, combination)
     return piece if combination.all? do |location|

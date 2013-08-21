@@ -1,4 +1,5 @@
-require_relative 'game'
+require_relative 'board'
+require_relative 'game_rules'
 require_relative 'player'
 require_relative 'io'
 
@@ -7,7 +8,7 @@ class Runner
 
   def initialize
     @board  = Board.new
-    @game   = Game.new(board)
+    @game   = GameRules.new(@board)
     @io     = Io.new($stdin, $stdout)
     @player = Player.new('X')
   end
@@ -27,13 +28,9 @@ class Runner
     move = @player.get_move
     if game.valid?(move)
       game.store_move(move)
-      #switch_current
-    end
-
-    if game.error
+    else
       io.invalid_input
-      io.prompt_move
-      game.store_move(move)
+      take_turn
     end
   end
 end

@@ -1,6 +1,8 @@
 require 'game'
 require 'board'
 
+#game rules
+#using constants for pieces
 describe Game do
   let(:board) {Board.new}
   let(:game)  {described_class.new(board)}
@@ -23,7 +25,7 @@ describe Game do
     it 'knows the piece to play' do
       game.piece.should == 'X'
       game.store_move('1', game.piece)
-      
+      game.switch_piece     
       game.available?('1').should be_false
 
       game.piece.should == 'O'
