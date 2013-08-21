@@ -1,7 +1,7 @@
 class GameRules
   FIRST_PLAYER_PIECE  = "X"
   SECOND_PLAYER_PIECE = "O"
-  GAME_PIECES = [FIRST_PLAYER_PIECE, "O"]
+  GAME_PIECES = [FIRST_PLAYER_PIECE, SECOND_PLAYER_PIECE]
 
   attr_accessor :board, :piece, :squares
 
