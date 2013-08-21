@@ -55,10 +55,10 @@ describe GameRules do
       rules.available?(square).should be_false
     end
 
-
     it 'knows the piece to play' do
       rules.piece.should == 'X'
       rules.store_move(1, rules.piece)
+
       rules.available?('1').should be_false
 
       rules.piece.should == 'O'
