@@ -15,4 +15,12 @@ describe Board do
       square.available?.should be_true
     end
   end
+
+  it 'gives squares indices' do
+    holder.squares
+    holder.set_indices
+    
+    square = holder.square_at(0)
+    square.index.should == 0
+  end
 end
