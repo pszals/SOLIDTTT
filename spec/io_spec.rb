@@ -1,6 +1,6 @@
 require 'io'
 require 'stringio'
-require 'square_holder'
+require 'board'
 
 describe Io do
   def output
@@ -30,7 +30,7 @@ describe Io do
   end
 
   it 'converts a board to a string' do
-    board = SquareHolder.new.squares
+    board = Board.new.squares
     io.board_as_string(board).should ==
       "   |   |   \n"\
       "---|---|---\n"\
@@ -41,7 +41,7 @@ describe Io do
   end
 
   it 'prints board as string' do
-    board = SquareHolder.new.squares
+    board = Board.new.squares
     io.display_board(board)
     @output_stream.rewind
     @output_stream.gets(nil).should ==

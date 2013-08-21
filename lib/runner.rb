@@ -1,37 +1,39 @@
-require_relative 'ttt'
+require_relative 'game'
 require_relative 'player'
 require_relative 'io'
 
 class Runner
-  attr_accessor :player, :ttt, :io
+  attr_accessor :player, :game, :io, :board
 
   def initialize
-    @ttt    = TTT.new
+    @board  = Board.new
+    @game   = Game.new(board)
     @io     = Io.new($stdin, $stdout)
+    @player = Player.new('X')
   end
 
   def play_game
-    while !ttt.over?
+    while !game.over?
       take_turn
     end
-    if ttt.over?
-      io.display_board(ttt.squares)
-      io.display_winner(ttt.find_winner)
-      exit
-    end
+
+    io.display_board(game.squares)
+    io.display_winner(game.find_winner)
   end
 
   def take_turn
-    io.display_board(ttt.squares)
+    io.display_board(game.squares)
     io.prompt_move
-    move = @io.get_move
-    if ttt.valid?(move)
-      ttt.store_move(move)
+    move = @player.get_move
+    if game.valid?(move)
+      game.store_move(move)
+      #switch_current
     end
-    if ttt.error
+
+    if game.error
       io.invalid_input
       io.prompt_move
-      ttt.store_move(move)
+      game.store_move(move)
     end
   end
 end

@@ -4,7 +4,7 @@ class Player
     @piece = piece
   end
 
-  def make_move(instream=$stdin)
+  def get_move(instream=$stdin)
     @move = instream.gets.chomp
   end
 end

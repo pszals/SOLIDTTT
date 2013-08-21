@@ -6,7 +6,7 @@ describe Runner do
   it 'takes a turn' do
     runner.io.should_receive(:display_board)
     runner.io.should_receive(:prompt_move)
-    runner.io.should_receive(:get_move)
+    runner.player.should_receive(:get_move)
     runner.take_turn
   end
 end
