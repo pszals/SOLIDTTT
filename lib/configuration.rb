@@ -21,7 +21,6 @@ class Configuration
   end
 
   def input_valid?(input)
-   p input
    [1, 2, 3].include? input
   end
 

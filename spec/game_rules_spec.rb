@@ -51,7 +51,7 @@ describe GameRules do
       square =  1 
       rules.store_move(square, piece)
 
-      rules.piece.should == 'O'
+      rules.piece.should == 'X'
       rules.available?(square).should be_false
     end
 
@@ -61,7 +61,7 @@ describe GameRules do
 
       rules.available?('1').should be_false
 
-      rules.piece.should == 'O'
+      rules.piece.should == 'X'
     end
   end
 
@@ -120,6 +120,20 @@ describe GameRules do
       rules.find_winner.should == nil
 
       rules.over?.should == true
+    end
+  end
+
+  context 'undoing a move' do
+    it 'sets contents of a given square at index to nil' do
+      rules.store_move(0)
+
+      rules.available?('0').should be_false
+      rules.piece.should == 'X'
+      
+      rules.undo_store_move('0')
+      
+      rules.available?('0').should be_true
+      rules.piece.should == 'X'
     end
   end
 end

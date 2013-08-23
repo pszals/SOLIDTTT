@@ -27,7 +27,10 @@ class GameRules
 
   def store_move(location, piece=@piece)
     square_at(location).set_contents(piece)
-    switch_piece
+  end
+
+  def undo_store_move(index)
+    square_at(index).set_contents(nil)
   end
 
   def valid?(input)

@@ -13,6 +13,12 @@ describe Io do
     described_class.new(instream, @output_stream)
   end
 
+  it 'prompts for input to configure game' do
+    io.prompt_configure_players
+    @output_stream.rewind
+    @output_stream.gets.should include 'configure'
+  end
+
   it 'prompts for a move' do
     io.prompt_move
     @output_stream.rewind

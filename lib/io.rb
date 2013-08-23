@@ -6,6 +6,10 @@ class Io
     @outstream = outstream
   end
 
+  def prompt_configure_players
+    outstream.puts "To configure, enter 1 for HvH, 2 for HvC, or 3 for CvC"
+  end
+
   def prompt_move
     outstream.puts "Enter a move: "
   end

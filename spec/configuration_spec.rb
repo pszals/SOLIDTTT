@@ -7,7 +7,7 @@ describe Configuration do
   context 'configuring players' do
     it 'prompts for configuring players' do
       config.io.should_receive(:prompt_configure_players)
-      config.io.should_receive(:get_move)
+      config.io.should_receive(:get_move).and_return(1)
       config.configure_players
     end
 
