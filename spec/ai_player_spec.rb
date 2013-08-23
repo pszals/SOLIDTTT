@@ -1,7 +1,6 @@
 require 'ai_player'
 require 'board'
 require 'game_rules'
-
 describe AIPlayer do
   let(:ai)    {AIPlayer.new('O')   }
   let(:board) {Board.new           }
@@ -25,23 +24,18 @@ describe AIPlayer do
   end
 
   context 'scoring the board' do
-   xit 'returns 1 if X wins' do
-      set_contents(0, 'X')
-      set_contents(1, 'X')
-      set_contents(2, 'X')
+    it 'returns -1 if O wins' do
+     board = Board.new
+     board.squares[0].contents = 'O'
+     board.squares[1].contents = 'O'
+     board.squares[2].contents = 'O'
 
-      ai.score_board(rules, 'X').should == 1
+     rules = GameRules.new(board)
+     
+     ai.score_board(rules, 'X').should == -1
     end
 
-   xit 'returns -1 if O wins' do
-      set_contents(0, 'O')
-      set_contents(1, 'O')
-      set_contents(2, 'O')
-
-      ai.score_board(rules, 'O').should == -1
-    end
-
-   it 'returns 1 if X wins' do
+    it 'returns 1 if X wins' do
      board = Board.new
      board.squares[0].contents = 'X'
      board.squares[1].contents = 'X'
@@ -50,17 +44,6 @@ describe AIPlayer do
      rules = GameRules.new(board)
      
      ai.score_board(rules, 'X').should == 1
-   end
-
-   it 'returns -1 if O wins' do
-     board = Board.new
-     board.squares[0].contents = 'O'
-     board.squares[1].contents = 'O'
-     board.squares[2].contents = 'O'
-
-     rules = GameRules.new(board)
-
-     ai.score_board(rules, 'O').should == -1
    end
 
    it 'returns 0 if tie game' do
@@ -82,7 +65,7 @@ describe AIPlayer do
   end
 
   context 'minimax' do
-    it 'returns score for a full board and marker' do
+    it 'returns score for a full board and tied game' do
       board = Board.new
       board.squares[0].contents = 'O'
       board.squares[1].contents = 'X'
@@ -95,7 +78,7 @@ describe AIPlayer do
       board.squares[8].contents = 'X'
 
       rules = GameRules.new(board)
-      ai.minimax(rules, 'X').should == 0
+      ai.minimax(rules, 'X', 1, -1.0/0, 1.0/0).should == 0
     end
 
     it 'returns score for board when X is one move away from winning' do
@@ -110,27 +93,26 @@ describe AIPlayer do
       board.squares[8].contents = 'O'
 
       rules = GameRules.new(board)
-      ai.minimax(rules, 'O').should == 1
+      ai.minimax(rules, 'X', 0, -1.0/0, 1.0/0).should == 1
     end
 
-    it 'returns score for board when game is tied' do
+    it 'returns score for board when O is one away from winning' do
       board = Board.new
-      board.squares[0].contents = 'O'
       board.squares[1].contents = 'X'
       board.squares[2].contents = 'O'
       board.squares[3].contents = 'X'
       board.squares[4].contents = 'O'
       board.squares[5].contents = 'X'
-      board.squares[6].contents = 'X'
-      board.squares[7].contents = 'O'
-      board.squares[8].contents = 'X'
+      board.squares[6].contents = 'O'
+      board.squares[7].contents = 'X'
+      board.squares[8].contents = 'O'
 
       rules = GameRules.new(board)
-      ai.minimax(rules, 'O').should == 0
+      ai.minimax(rules, 'X', 1, -1.0/0, 1.0/0).should == -1
     end
   end
 
-  it 'gets best square according to minimax' do
+  it 'gets best square according to minimax 1' do
     board = Board.new
     board.squares[1].contents = 'X'
     board.squares[2].contents = 'O'
@@ -142,5 +124,32 @@ describe AIPlayer do
     board.squares[8].contents = 'O'
     rules = GameRules.new(board)
     ai.get_move(rules, 'X').should == 0
+  end
+
+  it 'gets best square according to minimax 2' do
+    board = Board.new
+      board.squares[2].contents = 'X'
+      board.squares[3].contents = 'O'
+      board.squares[4].contents = 'X'
+      board.squares[5].contents = 'O'
+      board.squares[6].contents = 'O'
+      board.squares[7].contents = 'X'
+      board.squares[8].contents = 'O'
+    rules = GameRules.new(board)
+    ai.get_move(rules, 'X').should == 1
+  end
+
+  it 'gets best square according to minimax 3' do
+    board = Board.new
+    board.squares[0].contents = 'O'
+    board.squares[1].contents = 'O'
+    board.squares[3].contents = 'X'
+    board.squares[4].contents = 'X'
+    board.squares[6].contents = 'O'
+    board.squares[7].contents = 'X'
+    board.squares[8].contents = 'X'
+
+    rules = GameRules.new(board)
+    ai.get_move(rules, 'X').should == 5
   end
 end
