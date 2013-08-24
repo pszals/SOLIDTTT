@@ -1,4 +1,3 @@
-require 'pry'
 class AIPlayer
   attr_reader :piece, :move
   attr_accessor :open_squares
@@ -68,7 +67,7 @@ class AIPlayer
       end
     end 
 
-    return best_square.index
+    return best_square.index.to_s
   end
 end
 

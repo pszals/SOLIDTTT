@@ -14,7 +14,7 @@ class Configuration
     @io.prompt_configure_players
     input = @io.get_move
     if input_valid?(input.to_i)
-      instantiate_players(input)
+      instantiate_players(input.to_i)
     else
       configure_players
     end  

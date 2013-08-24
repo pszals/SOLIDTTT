@@ -123,7 +123,7 @@ describe AIPlayer do
     board.squares[7].contents = 'O'
     board.squares[8].contents = 'O'
     rules = GameRules.new(board)
-    ai.get_move(rules, 'X').should == 0
+    ai.get_move(rules, 'X').should == '0'
   end
 
   it 'gets best square according to minimax 2' do
@@ -136,7 +136,7 @@ describe AIPlayer do
       board.squares[7].contents = 'X'
       board.squares[8].contents = 'O'
     rules = GameRules.new(board)
-    ai.get_move(rules, 'X').should == 1
+    ai.get_move(rules, 'X').should == '1'
   end
 
   it 'gets best square according to minimax 3' do
@@ -150,6 +150,6 @@ describe AIPlayer do
     board.squares[8].contents = 'X'
 
     rules = GameRules.new(board)
-    ai.get_move(rules, 'X').should == 5
+    ai.get_move(rules, 'X').should == '5'
   end
 end

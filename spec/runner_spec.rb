@@ -1,11 +1,15 @@
 require 'runner'
 
 describe Runner do
-  let(:runner) { Runner.new }
+  let(:players) { [Player.new('X'), Player.new('O')] }
+  let(:runner)  { Runner.new(players) }
 
- xit 'takes a turn' do
-    runner.io.should_receive(:display_board)
-    runner.io.should_receive(:prompt_move)
-    runner.player.should_receive(:get_move)
+  it 'swaps players' do
+    player = runner.player
+    player.piece.should == 'X'
+
+    runner.swap_players!
+    player = runner.player
+    player.piece.should == 'O'
   end
 end

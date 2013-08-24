@@ -12,7 +12,7 @@ describe Player do
   it 'gets a square to mark when making move' do
     stringio = StringIO.new("5\n")
 
-    player_1.get_move(stringio)
+    player_1.get_move(stringio, :double, :double)
 
     player_1.move.should == '5'
   end

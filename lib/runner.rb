@@ -4,15 +4,14 @@ require_relative 'player'
 require_relative 'io'
 
 class Runner
-  attr_accessor :player, :game, :io, :board
+  attr_accessor :player, :game, :io, :board, :players
 
   def initialize(players)
     @board  = Board.new
     @game   = GameRules.new(@board)
     @io     = Io.new($stdin, $stdout)
-    @player = Player.new('X')
-    @player_1 = players[0]
-    @player_2 = players[1]
+    @players = players
+    @player = @players[0]
   end
 
   def play_game
@@ -27,13 +26,19 @@ class Runner
   def take_turn
     io.display_board(game.squares)
     io.prompt_move
-    move = @player.get_move
+    move = @player.get_move(@game, @players[0].piece)
     if game.valid?(move)
       game.store_move(move)
       game.switch_piece
+      swap_players!
     else
       io.invalid_input
       take_turn
     end
+  end
+
+  def swap_players!
+    @players[0], @players[1] =  @players[1], @players[0] 
+    @player = @players[0]
   end
 end
