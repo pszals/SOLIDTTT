@@ -26,7 +26,7 @@ class Runner
   def take_turn
     io.display_board(game.squares)
     io.prompt_move
-    move = @player.get_move(@game, @players[0].piece)
+    move = @player.get_move(@game, @player.piece)
     if game.valid?(move)
       game.store_move(move)
       game.switch_piece
