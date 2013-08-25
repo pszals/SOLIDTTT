@@ -38,7 +38,7 @@ class Runner
   end
 
   def swap_players!
-    @players[0], @players[1] =  @players[1], @players[0] 
+    @players.rotate!
     @player = @players[0]
   end
 end
