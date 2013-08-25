@@ -21,7 +21,7 @@ class Configuration
   end
 
   def input_valid?(input)
-   [1, 2, 3].include? input
+   [1, 2, 3].include?(input)
   end
 
   def instantiate_players(input)
